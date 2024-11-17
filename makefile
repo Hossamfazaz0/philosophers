@@ -9,7 +9,7 @@ SRC = main.c
 # OBJ = $(SRC:.c=.o)
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) main.c -o $(NAME)
+	$(CC) main.c -o $(NAME)
 
 all : $(NAME)
 
