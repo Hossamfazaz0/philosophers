@@ -2,21 +2,25 @@ NAME = philo
 
 CC = cc
 
-CFLAGS =  -fsanitize=thread
 
-SRC = main.c 
+SRC = main.c utils.c init.c philos_routine_func.c routine_functions.c
 
-# OBJ = $(SRC:.c=.o)
+OBJ = $(SRC:.c=.o)
 
-$(NAME) : $(OBJ)
-	$(CC) main.c -o $(NAME)
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) -o $(NAME)
 
-all : $(NAME)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean :
+all: $(NAME)
+
+clean:
 	rm -f $(OBJ)
 
-fclean : clean
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
+
+.PHONY: all clean fclean re

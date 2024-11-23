@@ -49,4 +49,23 @@ typedef struct s_philo {
     t_data         *data;
 } t_philo;
 
+int     ft_atoi(const char *str);
+size_t  ft_gettime(void);
+void    ft_usleep(long ms);
+void    print_state(t_philo *philo,  char *state);
+int start_simulation(t_data *data, t_philo *philo);
+int eat(t_philo *philo);
+void ft_usleep(long time);
+void *philosopher_routine(void *arg);
+void *monitor_routine(void *arg);
+int should_stop(t_philo *philo);
+int check_death(t_philo *philo);
+
+int     init_data(t_data *data, int ac, char **av);
+int     init_mutexes(t_data *data);
+int     init_philosophers(t_data *data, t_philo *philo);
+
+void    *philosopher_routine(void *arg);
+void    *monitor_routine(void *arg);
+
 #endif
