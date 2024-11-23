@@ -1,17 +1,16 @@
 NAME = philo
 
-CC = cc
-CFLAGS = -fsanitize=thread
+CC = cc 
+
 
 SRC = main.c utils.c init.c philos_routine_func.c routine_functions.c
 
 OBJ = $(SRC:.c=.o)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS)   $(OBJ) -o $(NAME)
-
+	$(CC) $(OBJ) -o $(NAME)
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC)  -c $< -o $@
 
 all: $(NAME)
 
