@@ -27,30 +27,42 @@ int	ft_atoi(const char *str)
 	}
 	return (sign * result);
 }
-void print_state(t_philo *philo,  char *state)
-{
-    pthread_mutex_lock(philo->data->print_mutex);     
-    pthread_mutex_lock(philo->data->stop_mutex);      
-    if (!philo->data->stop)
-    {
-        printf("%ld %d %s\n", 
-            ft_gettime() - philo->data->time_to_start,
-            philo->id,
-            state);
-    }
-    pthread_mutex_unlock(philo->data->stop_mutex);
-    pthread_mutex_unlock(philo->data->print_mutex);
-}
-size_t ft_gettime()
+// void print_state(t_philo *philo,  char *state)
+// {
+//     pthread_mutex_lock(philo->data->print_mutex);     
+//     pthread_mutex_lock(philo->data->stop_mutex);      
+//     if (!philo->data->stop)
+//     {
+//         printf("%ld %d %s\n", 
+//             ft_gettime() - philo->data->time_to_start,
+//             philo->id,
+//             state);
+//     }
+//     pthread_mutex_unlock(philo->data->stop_mutex);
+//     pthread_mutex_unlock(philo->data->print_mutex);
+// }
+size_t ft_gettime(void)
 {
     struct timeval time;
-    gettimeofday(&time,NULL);
-    return((time.tv_sec  * 1000) + (time.tv_usec / 1000));
+    
+    if (gettimeofday(&time, NULL) != 0)
+    {
+        write(2, "Error: gettimeofday failed\n", 26);
+        return (0);
+    }
+    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
+
 void ft_usleep(long time)
 {
-    long start = ft_gettime();
-
-    while (ft_gettime() - start < time)
-        usleep(100);
+    long start;
+    
+    start = ft_gettime();
+    while ((ft_gettime() - start) < time)
+    {
+        if (time > 1000)  // For longer waits, sleep longer
+            usleep(1000);
+        else
+            usleep(100);  // For shorter waits, more precise
+    }
 }
