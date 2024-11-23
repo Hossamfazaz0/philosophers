@@ -36,13 +36,16 @@ int eat(t_philo *philo)
 
     return 0;
 }
-
 void *philosopher_routine(void *arg)
 {
     t_philo *philo = (t_philo *)arg;
 
     if (!philo || !philo->data)
         return NULL;
+    
+    // Only stagger even philosophers by the eating time given as parameter
+    if (philo->id % 2 == 0)
+        ft_usleep(philo->data->time_to_eat);
 
     if (philo->data->nb_of_philo == 1)
     {
@@ -54,9 +57,6 @@ void *philosopher_routine(void *arg)
     pthread_mutex_lock(philo->data->last_meal_mutex);
     philo->last_meal_time = ft_gettime();
     pthread_mutex_unlock(philo->data->last_meal_mutex);
-
-    if (philo->id % 2 == 0)
-        ft_usleep(philo->data->time_to_eat / 2);
 
     while (!should_stop(philo))
     {

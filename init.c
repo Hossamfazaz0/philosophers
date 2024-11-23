@@ -25,30 +25,30 @@ int init_data(t_data *data, int ac, char **av)
 }
 int init_philosophers(t_data *data, t_philo *philo)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	
-	while(i < data->nb_of_philo)
-	{
-		philo[i].id= i + 1;
-		philo[i].data = data;
-		philo[i].last_meal_time = ft_gettime();
-		philo[i].meals_eaten = 0;
-		if(i % 2 == 0)
-		{
-			philo[i].left_fork = &data->forks[i];
-			philo[i].right_fork = &data->forks[(i + 1) % data->nb_of_philo];
-		}
-		else
-		{
-			philo[i].right_fork = &data->forks[i];
-			philo[i].left_fork = &data->forks[(i + 1) % data->nb_of_philo];
-		}
-
-		i++;
-	}
-	return (SUCCESS);
+    i = 0;
+    while(i < data->nb_of_philo)
+    {
+        philo[i].id = i + 1;
+        philo[i].data = data;
+        philo[i].last_meal_time = ft_gettime();
+        philo[i].meals_eaten = 0;
+        
+        // For odd numbers, use right-left ordering for last philosopher
+        if (i == data->nb_of_philo - 1 && data->nb_of_philo % 2 == 1)
+        {
+            philo[i].right_fork = &data->forks[0];
+            philo[i].left_fork = &data->forks[i];
+        }
+        else
+        {
+            philo[i].left_fork = &data->forks[i];
+            philo[i].right_fork = &data->forks[(i + 1) % data->nb_of_philo];
+        }
+        i++;
+    }
+    return (SUCCESS);
 }
 int init_mutexes(t_data *data)
 {
