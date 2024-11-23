@@ -35,7 +35,6 @@ int init_philosophers(t_data *data, t_philo *philo)
         philo[i].last_meal_time = ft_gettime();
         philo[i].meals_eaten = 0;
         
-        // For odd numbers, use right-left ordering for last philosopher
         if (i == data->nb_of_philo - 1 && data->nb_of_philo % 2 == 1)
         {
             philo[i].right_fork = &data->forks[0];

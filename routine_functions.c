@@ -1,9 +1,16 @@
 #include "philo.h"
+#include "philo.h"
+
 int eat(t_philo *philo)
 {
     if (!philo || !philo->data)
         return 1;
-
+        
+    // Add initial delay for even-numbered philosophers
+    if(philo->id % 2 == 0)
+        ft_usleep(philo->data->time_to_eat / 2);
+        
+    // Check stop condition before acquiring any locks
     pthread_mutex_lock(philo->data->stop_mutex);
     if (philo->data->stop)
     {
@@ -12,18 +19,37 @@ int eat(t_philo *philo)
     }
     pthread_mutex_unlock(philo->data->stop_mutex);
 
-    pthread_mutex_lock(philo->left_fork);
+    // Always acquire forks in a consistent order based on their memory addresses
+    pthread_mutex_t *first_fork;
+    pthread_mutex_t *second_fork;
+    
+    // Compare fork addresses to establish consistent ordering
+    if (philo->left_fork < philo->right_fork)
+    {
+        first_fork = philo->left_fork;
+        second_fork = philo->right_fork;
+    }
+    else
+    {
+        first_fork = philo->right_fork;
+        second_fork = philo->left_fork;
+    }
+
+    // Acquire forks in the determined order
+    pthread_mutex_lock(first_fork);
     print_state(philo, "has taken a fork");
-    pthread_mutex_lock(philo->right_fork);
+    pthread_mutex_lock(second_fork);
     print_state(philo, "has taken a fork");
     print_state(philo, "is eating");
 
+    // Update last meal time
     pthread_mutex_lock(philo->data->last_meal_mutex);
     philo->last_meal_time = ft_gettime();
     pthread_mutex_unlock(philo->data->last_meal_mutex);
 
     ft_usleep(philo->data->time_to_eat);
 
+    // Update meals eaten count
     pthread_mutex_lock(philo->data->meals_mutex);
     philo->meals_eaten++;
     if (philo->data->nb_of_meals != -1 && 
@@ -31,8 +57,9 @@ int eat(t_philo *philo)
         philo->data->number_philos_ate++;
     pthread_mutex_unlock(philo->data->meals_mutex);
 
-    pthread_mutex_unlock(philo->right_fork);
-    pthread_mutex_unlock(philo->left_fork);
+    // Release forks in reverse order
+    pthread_mutex_unlock(second_fork);
+    pthread_mutex_unlock(first_fork);
 
     return 0;
 }
@@ -43,7 +70,6 @@ void *philosopher_routine(void *arg)
     if (!philo || !philo->data)
         return NULL;
     
-    // Only stagger even philosophers by the eating time given as parameter
     if (philo->id % 2 == 0)
         ft_usleep(philo->data->time_to_eat);
 
@@ -62,6 +88,7 @@ void *philosopher_routine(void *arg)
     {
         if (eat(philo))
             break;
+
         print_state(philo, "is sleeping");
         ft_usleep(philo->data->time_to_sleep);
         print_state(philo, "is thinking");
