@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
+/*   Updated: 2024/11/25 00:19:15 by hfazaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	ft_atoi(const char *str)
@@ -48,6 +60,35 @@ void	ft_usleep(long time)
 	start = ft_gettime();
 	while ((ft_gettime() - start) < time)
 	{
-		usleep(100);
+		usleep(500);
+	}
+}
+
+void	print_state(t_philo *philo, char *state)
+{
+	pthread_mutex_lock(&philo->data->stop_mutex);
+	if (!philo->data->stop)
+	{
+		pthread_mutex_lock(&philo->data->print_mutex);
+		printf("%ld %d %s\n", ft_gettime() - philo->data->time_to_start,
+			philo->id, state);
+		pthread_mutex_unlock(&philo->data->print_mutex);
+	}
+	pthread_mutex_unlock(&philo->data->stop_mutex);
+}
+
+void	destroy_mutexes(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_destroy(&data->stop_mutex);
+	pthread_mutex_destroy(&data->print_mutex);
+	pthread_mutex_destroy(&data->meals_mutex);
+	pthread_mutex_destroy(&data->last_meal_mutex);
+	while (i < data->nb_of_philo)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
 	}
 }

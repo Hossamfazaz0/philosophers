@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
+/*   Updated: 2024/11/25 00:30:32 by hfazaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	init_data(t_data *data, int ac, char **av)
@@ -6,7 +18,10 @@ int	init_data(t_data *data, int ac, char **av)
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
-	data->nb_of_meals = (ac == 6) ? ft_atoi(av[5]) : -1;
+	if (ac == 6)
+		data->nb_of_meals = ft_atoi(av[5]);
+	else
+		data->nb_of_meals = -1;
 	if (data->nb_of_philo <= 0 || data->time_to_die <= 0
 		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (ac == 6
 			&& data->nb_of_meals <= 0))
@@ -15,10 +30,6 @@ int	init_data(t_data *data, int ac, char **av)
 	data->stop = 0;
 	data->number_philos_ate = 0;
 	data->forks = NULL;
-	data->print_mutex = NULL;
-	data->stop_mutex = NULL;
-	data->last_meal_mutex = NULL;
-	data->meals_mutex = NULL;
 	return (SUCCESS);
 }
 
@@ -46,20 +57,16 @@ int	init_mutexes(t_data *data)
 
 	i = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_of_philo);
-	data->stop_mutex = malloc(sizeof(pthread_mutex_t));
-	data->print_mutex = malloc(sizeof(pthread_mutex_t));
-	data->meals_mutex = malloc(sizeof(pthread_mutex_t));
-	data->last_meal_mutex = malloc(sizeof(pthread_mutex_t));
 	data->philosophers = malloc(sizeof(pthread_t) * data->nb_of_philo);
 	while (i < data->nb_of_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
-	pthread_mutex_init(data->stop_mutex, NULL);
-	pthread_mutex_init(data->print_mutex, NULL);
-	pthread_mutex_init(data->meals_mutex, NULL);
-	pthread_mutex_init(data->last_meal_mutex, NULL);
+	pthread_mutex_init(&data->stop_mutex, NULL);
+	pthread_mutex_init(&data->print_mutex, NULL);
+	pthread_mutex_init(&data->meals_mutex, NULL);
+	pthread_mutex_init(&data->last_meal_mutex, NULL);
 	return (SUCCESS);
 }
 

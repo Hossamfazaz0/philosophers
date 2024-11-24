@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
+/*   Updated: 2024/11/24 23:29:33 by hfazaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -30,10 +42,10 @@ typedef struct s_data {
     long            nb_of_meals;
     long            time_to_start;
     int             stop;
-    pthread_mutex_t *print_mutex;
-    pthread_mutex_t *stop_mutex;
-    pthread_mutex_t *last_meal_mutex;
-    pthread_mutex_t *meals_mutex;
+    pthread_mutex_t print_mutex;
+    pthread_mutex_t stop_mutex;
+    pthread_mutex_t last_meal_mutex;
+    pthread_mutex_t meals_mutex;
     int             number_philos_ate;
     pthread_t       *philosophers;
     pthread_t       monitor;
@@ -67,5 +79,7 @@ int     init_philosophers(t_data *data, t_philo *philo);
 
 void    *philosopher_routine(void *arg);
 void    *monitor_routine(void *arg);
+void	destroy_mutexes(t_data *data);
+void 	start(t_data *data, t_philo *philo);
 
 #endif

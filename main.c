@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfazaz <hfazaz@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
-/*   Updated: 2024/11/24 02:02:19 by hfazaz           ###   ########.fr       */
+/*   Updated: 2024/11/24 23:30:14 by hfazaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,21 @@ int	main(int ac, char **av)
 	t_philo	*philo;
 
 	data = malloc(sizeof(t_data));
+	if (!data)
+		return (1);
 	if (!check_args(ac, av) || !check_values(av))
 	{
 		print_usage();
+		free(data);
 		return (1);
 	}
 	init_data(data, ac, av);
 	philo = malloc(sizeof(t_philo) * data->nb_of_philo);
-	init_mutexes(data);
-	init_philosophers(data, philo);
-	start_simulation(data, philo);
+	if (!philo)
+	{
+		free(data);
+		return (1);
+	}
+	start(data, philo);
+	return (0);
 }
