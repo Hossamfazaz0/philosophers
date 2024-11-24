@@ -76,6 +76,7 @@ void	print_usage(void)
 	- Number of times each philosopher must eat\n");
 	printf("\nAll time values must be positive integers in milliseconds\n");
 }
+
 int	main(int ac, char **av)
 {
 	t_data *data;
@@ -86,8 +87,6 @@ int	main(int ac, char **av)
 		print_usage();
 		return (1);
 	}
-	// data = malloc(sizeof(t_data));
-	// philo = malloc(sizeof(t_philo));
 	init_data(data, ac, av);
 	philo = malloc(sizeof(t_philo) * data->nb_of_philo);
 	init_mutexes(data);

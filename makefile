@@ -8,7 +8,7 @@ SRC = main.c utils.c init.c philos_routine_func.c routine_functions.c
 OBJ = $(SRC:.c=.o)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) -pthread $(OBJ) -o $(NAME)
 %.o: %.c
 	$(CC)  -c $< -o $@
 

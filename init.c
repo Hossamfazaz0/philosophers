@@ -6,6 +6,8 @@ int	init_data(t_data *data, int ac, char **av)
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
+	if(data->time_to_sleep + data->time_to_eat > data->time_to_eat)
+		data->time_to_sleep = 1;
 	data->nb_of_meals = (ac == 6) ? ft_atoi(av[5]) : -1;
 	if (data->nb_of_philo <= 0 || data->time_to_die <= 0
 		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (ac == 6

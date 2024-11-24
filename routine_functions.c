@@ -1,5 +1,26 @@
 #include "philo.h"
 
+void eat_helper(t_philo *philo, pthread_mutex_t	*first_fork, pthread_mutex_t *second_fork)
+{
+	pthread_mutex_lock(first_fork);
+	print_state(philo, "has taken a fork");
+	pthread_mutex_lock(second_fork);
+	print_state(philo, "has taken a fork");
+	print_state(philo, "is eating");
+	pthread_mutex_lock(philo->data->last_meal_mutex);
+	philo->last_meal_time = ft_gettime();
+	pthread_mutex_unlock(philo->data->last_meal_mutex);
+	ft_usleep(philo->data->time_to_eat);
+	pthread_mutex_lock(philo->data->meals_mutex);
+	philo->meals_eaten++;
+	if (philo->data->nb_of_meals != -1
+		&& philo->meals_eaten == philo->data->nb_of_meals)
+		philo->data->number_philos_ate++;
+	pthread_mutex_unlock(philo->data->meals_mutex);
+	pthread_mutex_unlock(second_fork);
+	pthread_mutex_unlock(first_fork);
+	usleep(100);
+}
 int	eat(t_philo *philo)
 {
 	pthread_mutex_t	*first_fork;
@@ -7,10 +28,8 @@ int	eat(t_philo *philo)
 
 	if (!philo || !philo->data)
 		return (1);
-	// Add initial delay for even-numbered philosophers
 	if (philo->id % 2 == 0)
 		usleep(500);
-	// Check stop condition before acquiring any locks
 	pthread_mutex_lock(philo->data->stop_mutex);
 	if (philo->data->stop)
 	{
@@ -28,28 +47,8 @@ int	eat(t_philo *philo)
 		first_fork = philo->right_fork;
 		second_fork = philo->left_fork;
 	}
-	pthread_mutex_lock(first_fork);
-	print_state(philo, "has taken a fork");
-	pthread_mutex_lock(second_fork);
-	print_state(philo, "has taken a fork");
-	print_state(philo, "is eating");
-	// Update last meal time
-	pthread_mutex_lock(philo->data->last_meal_mutex);
-	philo->last_meal_time = ft_gettime();
-	pthread_mutex_unlock(philo->data->last_meal_mutex);
-	ft_usleep(philo->data->time_to_eat);
-	// usleep(500) ;
-	// Update meals eaten count
-	pthread_mutex_lock(philo->data->meals_mutex);
-	philo->meals_eaten++;
-	if (philo->data->nb_of_meals != -1
-		&& philo->meals_eaten == philo->data->nb_of_meals)
-		philo->data->number_philos_ate++;
-	pthread_mutex_unlock(philo->data->meals_mutex);
-	// Release forks in reverse order
-	pthread_mutex_unlock(second_fork);
-	pthread_mutex_unlock(first_fork);
-	usleep(100);
+	eat_helper(philo,first_fork, second_fork);
+
 	return (0);
 }
 void	*philosopher_routine(void *arg)
@@ -108,6 +107,7 @@ void	check_philo_death(t_philo *philo, int i)
 			philo->data->stop = 1;
 			printf("%ld %d died\n", current_time - philo->data->time_to_start,
 				philo[i].id);
+			
 		}
 		pthread_mutex_unlock(philo->data->stop_mutex);
 	}
