@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfazaz <42.fr>                      +#+  +:+       +#+        */
+/*   By: hfazaz <hfazaz@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
 /*   Updated: 2024/11/24 02:02:19 by hfazaz           ###   ########.fr       */
@@ -75,23 +75,28 @@ static int	check_values(char **av)
 		printf("Error: Time values must be positive\n");
 		return (0);
 	}
-	if(av[5] && ft_atoi(av[5]) <= 0)
+	if (av[5] && ft_atoi(av[5]) <= 0)
 	{
 		printf("number of meals should be greater than 0");
-		return 0;
+		return (0);
 	}
 	return (1);
 }
 
 void	print_usage(void)
 {
-	printf("\nUsage: ./philo <number_of_philosophers> <time_to_die> <time_to_eat> ");
+	printf("\nUsage: ./philo <number_of_philosophers>\
+	<time_to_die> <time_to_eat> ");
 	printf("<time_to_sleep> [number_of_times_each_philosopher_must_eat]\n\n");
 	printf("Arguments:\n");
-	printf("- number_of_philosophers : Number of philosophers and forks [1-200]\n");
-	printf("- time_to_die          : Time in ms before a philosopher dies without eating\n");
-	printf("- time_to_eat          : Time in ms it takes to eat using two forks\n");
-	printf("- time_to_sleep        : Time in ms that a philosopher spends sleeping\n");
+	printf("- number_of_philosophers : \
+	Number of philosophers and forks [1-200]\n");
+	printf("- time_to_die          : \
+	Time in ms before a philosopher dies without eating\n");
+	printf("- time_to_eat          : \
+	Time in ms it takes to eat using two forks\n");
+	printf("- time_to_sleep        : \
+	Time in ms that a philosopher spends sleeping\n");
 	printf("- [times_must_eat]     : Optional\
 	- Number of times each philosopher must eat\n");
 	printf("\nAll time values must be positive integers in milliseconds\n");
@@ -99,8 +104,9 @@ void	print_usage(void)
 
 int	main(int ac, char **av)
 {
-	t_data *data;
-	t_philo *philo;
+	t_data	*data;
+	t_philo	*philo;
+
 	data = malloc(sizeof(t_data));
 	if (!check_args(ac, av) || !check_values(av))
 	{

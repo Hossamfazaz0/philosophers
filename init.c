@@ -65,7 +65,7 @@ int	init_mutexes(t_data *data)
 
 int	start_simulation(t_data *data, t_philo *philo)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	data->time_to_start = ft_gettime();
