@@ -6,8 +6,6 @@ int	init_data(t_data *data, int ac, char **av)
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
-	if(data->time_to_sleep + data->time_to_eat > data->time_to_eat)
-		data->time_to_sleep = 1;
 	data->nb_of_meals = (ac == 6) ? ft_atoi(av[5]) : -1;
 	if (data->nb_of_philo <= 0 || data->time_to_die <= 0
 		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (ac == 6
@@ -23,6 +21,7 @@ int	init_data(t_data *data, int ac, char **av)
 	data->meals_mutex = NULL;
 	return (SUCCESS);
 }
+
 int	init_philosophers(t_data *data, t_philo *philo)
 {
 	int	i;
@@ -40,6 +39,7 @@ int	init_philosophers(t_data *data, t_philo *philo)
 	}
 	return (SUCCESS);
 }
+
 int	init_mutexes(t_data *data)
 {
 	int	i;
@@ -62,6 +62,7 @@ int	init_mutexes(t_data *data)
 	pthread_mutex_init(data->last_meal_mutex, NULL);
 	return (SUCCESS);
 }
+
 int	start_simulation(t_data *data, t_philo *philo)
 {
 	int i;

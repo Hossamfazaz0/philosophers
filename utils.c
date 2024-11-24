@@ -28,20 +28,7 @@ int	ft_atoi(const char *str)
 	}
 	return (sign * result);
 }
-// void print_state(t_philo *philo,  char *state)
-// {
-//     pthread_mutex_lock(philo->data->print_mutex);
-//     pthread_mutex_lock(philo->data->stop_mutex);
-//     if (!philo->data->stop)
-//     {
-//         printf("%ld %d %s\n",
-//             ft_gettime() - philo->data->time_to_start,
-//             philo->id,
-//             state);
-//     }
-//     pthread_mutex_unlock(philo->data->stop_mutex);
-//     pthread_mutex_unlock(philo->data->print_mutex);
-// }
+
 size_t	ft_gettime(void)
 {
 	struct timeval	time;

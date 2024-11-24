@@ -1,9 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfazaz <42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
+/*   Updated: 2024/11/24 02:02:19 by hfazaz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
+
+static int	is_valid_number(char *str)
+{
+	int	j;
+
+	j = 0;
+	if (!str[0])
+	{
+		printf("Error: Empty argument\n");
+		return (0);
+	}
+	while (str[j])
+	{
+		if (str[j] == '+' && j == 0)
+			j++;
+		if (str[j] < '0' || str[j] > '9')
+		{
+			printf("Error: Arguments must be positive numbers\n");
+			return (0);
+		}
+		j++;
+	}
+	return (1);
+}
 
 static int	check_args(int ac, char **av)
 {
 	int	i;
-	int	j;
 
 	if (ac != 5 && ac != 6)
 	{
@@ -13,23 +48,8 @@ static int	check_args(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		j = 0;
-		if (!av[i][0])
-		{
-			printf("Error: Empty argument\n");
+		if (!is_valid_number(av[i]))
 			return (0);
-		}
-		while (av[i][j])
-		{
-			if (av[i][j] == '+' && j == 0)
-				j++;
-			if (av[i][j] < '0' || av[i][j] > '9')
-			{
-				printf("Error: Arguments must be positive numbers\n");
-				return (0);
-			}
-			j++;
-		}
 		i++;
 	}
 	return (1);

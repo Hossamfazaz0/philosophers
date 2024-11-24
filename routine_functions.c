@@ -1,4 +1,12 @@
 #include "philo.h"
+void assign_forks(t_philo *philo, pthread_mutex_t *first_fork, pthread_mutex_t *second_fork)
+{
+	
+	if(philo->right_fork < philo->left_fork)
+		first_fork = philo->right_fork;
+	else
+		second_fork = philo->left_fork;
+}
 
 void eat_helper(t_philo *philo, pthread_mutex_t	*first_fork, pthread_mutex_t *second_fork)
 {
@@ -21,11 +29,14 @@ void eat_helper(t_philo *philo, pthread_mutex_t	*first_fork, pthread_mutex_t *se
 	pthread_mutex_unlock(first_fork);
 	usleep(100);
 }
+
 int	eat(t_philo *philo)
 {
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
 
+	first_fork = malloc(sizeof(pthread_mutex_t *));
+	second_fork = malloc(sizeof(pthread_mutex_t *));
 	if (!philo || !philo->data)
 		return (1);
 	if (philo->id % 2 == 0)
@@ -37,20 +48,11 @@ int	eat(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(philo->data->stop_mutex);
-	if (philo->left_fork < philo->right_fork)
-	{
-		first_fork = philo->left_fork;
-		second_fork = philo->right_fork;
-	}
-	else
-	{
-		first_fork = philo->right_fork;
-		second_fork = philo->left_fork;
-	}
+	assign_forks(philo,first_fork,second_fork);
 	eat_helper(philo,first_fork, second_fork);
-
 	return (0);
 }
+
 void	*philosopher_routine(void *arg)
 {
 	t_philo	*philo;
