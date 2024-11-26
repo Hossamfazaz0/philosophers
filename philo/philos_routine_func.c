@@ -6,7 +6,7 @@
 /*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
-/*   Updated: 2024/11/25 00:32:42 by hfazaz           ###   ########.fr       */
+/*   Updated: 2024/11/26 20:13:18 by hfazaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	eat_helper(t_philo *philo, pthread_mutex_t *first_fork,
 	pthread_mutex_unlock(&philo->data->meals_mutex);
 	pthread_mutex_unlock(second_fork);
 	pthread_mutex_unlock(first_fork);
+	usleep(100);
 }
 
 int	eat(t_philo *philo)
@@ -70,14 +71,9 @@ int	eat(t_philo *philo)
 	return (0);
 }
 
-void	start(t_data *data, t_philo *philo)
+void	clean(t_data *data, t_philo *philo)
 {
-	init_mutexes(data);
-	init_philosophers(data, philo);
-	start_simulation(data, philo);
-	destroy_mutexes(data);
-	free(data->forks);
-	free(data->philosophers);
-	free(philo);
+	destory_mutexes(data);
 	free(data);
+	free(philo);
 }

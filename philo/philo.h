@@ -6,7 +6,7 @@
 /*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
-/*   Updated: 2024/11/24 23:29:33 by hfazaz           ###   ########.fr       */
+/*   Updated: 2024/11/26 03:24:21 by hfazaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int     init_philosophers(t_data *data, t_philo *philo);
 
 void    *philosopher_routine(void *arg);
 void    *monitor_routine(void *arg);
-void	destroy_mutexes(t_data *data);
-void 	start(t_data *data, t_philo *philo);
+void    destory_mutexes(t_data *data);
 
+void    clean(t_data *data,t_philo *philo);
 #endif

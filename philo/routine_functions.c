@@ -6,7 +6,7 @@
 /*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
-/*   Updated: 2024/11/25 00:42:24 by hfazaz           ###   ########.fr       */
+/*   Updated: 2024/11/26 20:29:44 by hfazaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*philosopher_routine(void *arg)
 	if (!philo || !philo->data)
 		return (NULL);
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->data->time_to_eat / 2);
+		ft_usleep(philo->data->time_to_eat);
 	if (philo->data->nb_of_philo == 1)
 	{
 		print_state(philo, "has taken a fork");
@@ -106,6 +106,7 @@ void	*monitor_routine(void *arg)
 			usleep(500);
 			i++;
 		}
+		usleep(100);
 	}
 	return (NULL);
 }

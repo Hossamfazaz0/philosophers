@@ -6,7 +6,7 @@
 /*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
-/*   Updated: 2024/11/24 23:30:14 by hfazaz           ###   ########.fr       */
+/*   Updated: 2024/11/26 16:43:16 by hfazaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,10 @@ int	main(int ac, char **av)
 
 	data = malloc(sizeof(t_data));
 	if (!data)
+	{
+		printf("Error: Memory allocation failed for data\n");
 		return (1);
+	}
 	if (!check_args(ac, av) || !check_values(av))
 	{
 		print_usage();
@@ -119,10 +122,10 @@ int	main(int ac, char **av)
 	init_data(data, ac, av);
 	philo = malloc(sizeof(t_philo) * data->nb_of_philo);
 	if (!philo)
-	{
-		free(data);
 		return (1);
-	}
-	start(data, philo);
+	init_mutexes(data);
+	init_philosophers(data, philo);
+	start_simulation(data, philo);
+	clean(data, philo);
 	return (0);
 }

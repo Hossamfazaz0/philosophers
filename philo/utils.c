@@ -6,7 +6,7 @@
 /*   By: hfazaz <hfazaz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 02:01:35 by hfazaz            #+#    #+#             */
-/*   Updated: 2024/11/25 00:19:15 by hfazaz           ###   ########.fr       */
+/*   Updated: 2024/11/26 20:13:06 by hfazaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_usleep(long time)
 	start = ft_gettime();
 	while ((ft_gettime() - start) < time)
 	{
-		usleep(500);
+		usleep(100);
 	}
 }
 
@@ -77,18 +77,19 @@ void	print_state(t_philo *philo, char *state)
 	pthread_mutex_unlock(&philo->data->stop_mutex);
 }
 
-void	destroy_mutexes(t_data *data)
+void	destory_mutexes(t_data *data)
 {
 	int	i;
 
 	i = 0;
+	pthread_mutex_destroy(&data->last_meal_mutex);
 	pthread_mutex_destroy(&data->stop_mutex);
 	pthread_mutex_destroy(&data->print_mutex);
-	pthread_mutex_destroy(&data->meals_mutex);
-	pthread_mutex_destroy(&data->last_meal_mutex);
-	while (i < data->nb_of_philo)
+	while (i < data->nb_of_meals)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
+	free(data->philosophers);
+	free(data->forks);
 }
